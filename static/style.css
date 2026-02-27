@@ -143,3 +143,14 @@ a:hover {
 .delete-btn:hover {
     background-color: #ee3d4f;
 }
+
+.btn-grp {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-grp button {
+    width: auto;
+    padding: 12px 24px;
+}

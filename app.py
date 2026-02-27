@@ -1,7 +1,8 @@
-from flask import Flask, render_template, redirect, request, session, flash, url_for
+from flask import Flask, render_template, redirect, request, flash, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user # type: ignore
-from werkzeug.security import generate_password_hash, check_password_hash
-from functools import wraps
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from werkzeug.security import generate_password_hash, check_password_hash, 
 import sqlite3
 import requests
 import random
@@ -10,6 +11,13 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "30 per hour"],
+    storage_uri="memory://"
+)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -65,6 +73,7 @@ def land():
 
     
 @app.route('/signup', methods=['GET', 'POST'])
+@limiter.limit("5 per hour")
 def signup():
     if request.method == 'POST':
         username = request.form['username']
@@ -85,6 +94,7 @@ def signup():
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("10 per hour")
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -124,6 +134,7 @@ def dashboard():
     return render_template('dashboard.html', movies=movies)
 
 @app.route('/add_movie', methods=['GET', 'POST'])
+@limiter.limit("25 per hour")
 @login_required
 def add_movie():
     if request.method == 'POST':
@@ -198,7 +209,10 @@ def random_pick():
     return redirect(url_for('dashboard'))
     
     
-    
+@app.errorhandler(429)
+def ratelimite(e):
+    flash('Too many reuqests, Please try again later', 'error')
+    return redirect(url_for('dashboard')), 429
     
     
             
