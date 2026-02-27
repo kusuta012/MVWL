@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: burlywood;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 30px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff7300;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #e06501;
+}
+
+.error {
+    color: red;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9e2e2;
+    border-radius: 4px;
+}
+
+.success {
+    color: green;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9e2e2;
+    border-radius: 4px;
+}
+
+
+a {
+    color: #ff7300;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
