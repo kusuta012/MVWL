@@ -10,6 +10,13 @@ frontend - just html css
 
 # screenshots
 
+<img width="1920" height="974" alt="image" src="https://github.com/user-attachments/assets/181715a7-6830-4c39-afa6-ee027d73818d" />
+
+<img width="1920" height="976" alt="image" src="https://github.com/user-attachments/assets/95a64703-791e-43a7-a002-c9ded3beb4eb" />
+
+<img width="1275" height="984" alt="image" src="https://github.com/user-attachments/assets/d8864baa-e4ae-4868-8351-3c889ccc59d2" />
+
+
 # why I made this?
 
 I made this for ysws called slushies in hackclub, this was a lowkey cool project, it was fun to make
