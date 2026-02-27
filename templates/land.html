@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Night Watchlist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container" style="text-align: center; margin-top: 100px;">
         <h1 style="font-size: 48px;">Movie Night Watchlist</h1>
+        <div style="margin-top: 40px;">
+            <a href="{{ url_for('signup') }}"><button class="home-button">Get Started</button></a>
+            <a href="{{ url_for('login') }}"><button class="home-button">Login</button></a>
+        </div>
     </div>
 </body>
 </html>

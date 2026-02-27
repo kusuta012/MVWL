@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My watchlist</h1>
+            <div>
+                <span style="margin-right: 15px;">Hey, {{ current_user.username }}!!</span>
+                <a href="{{ url_for('logout') }}"><button class="small-btn">Logout</button></a>
+            </div>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <a href="{{ url_for('add_movie') }}"><button>Add Movies</button></a>
+            <a href="{{ url_for('random_pick') }}"><button>Random Pick</button></a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="movie-grid">
+            {% if movies %}
+                {% for movie in movies %}
+                    <div class="movie-card">
+                        {% if movie[4] and movie[4] != 'N/A' %}
+                            <img src="{{ movie[4] }}" alt="{{ movie[2] }}">
+                        {% else %}
+                            <div style="width: 100%; height: 350px; background-color: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                <span>No poster</span>
+                            </div>
+                        {% endif %}
+                        <h3>{{ movie[2] }}</h3>
+                        <p>Year: {{ movie[3] }}</p>
+                        <p>Rating: {{ movie[5] }}</p>
+                        <div class="movie-actions">
+                            {% if movie[6] == 0 %}
+                                <a href="{{ url_for('mark_watched', movie_id=movie[0]) }}"><button class="small-btn">Mark Watched</button></a>
+                            {% else %}
+                                <span style="color: green; font-weight: bold;">Watched</span>
+                            {% endif %}
+                            <a href="{{ url_for('del_movie', movie_id=movie[0]) }}"><button class="small-btn dlt-btn">Delete</button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="grid-column: 1/-1; text-align: center; font-size: 18px; color: #666;">No movies yet, Add some to get started!</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

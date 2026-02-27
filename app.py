@@ -104,7 +104,104 @@ def login():
             return render_template('login.html', message=['Invalid username or password'])
 
     return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Logged out', 'success')
+    return redirect(url_for('login'))
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    conn = sqlite3.connect('movies.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM movies WHERE user_id = ?', (current_user.id,))
+    movies = c.fetchall()
+    conn.close()
+    
+    return render_template('dashboard.html', movies=movies)
+
+@app.route('/add_movie', methods=['GET', 'POST'])
+@login_required
+def add_movie():
+    if request.method == 'POST':
+        movie_title = request.form['title']
         
+        print(f'{OMDB_API_KEY}')
+        print(f'{movie_title}')
+        
+        url = f'http://www.omdbapi.com/?t={movie_title}&apikey={OMDB_API_KEY}'
+        print(f'{url}')
+        response = requests.get(url)
+        data = response.json()
+        
+        print(f"Response: {data}")
+        
+        if data.get('Response') == 'True':
+            title = data.get('Title')
+            year = data.get('Year')
+            poster = data.get('Poster')
+            rating = data.get('imdbRating')
+            
+            conn = sqlite3.connect('movies.db')
+            c = conn.cursor()
+            c.execute('INSERT INTO movies (user_id, title, year, poster, rating) VALUES (?, ?, ?, ?, ?)', (current_user.id, title, year, poster, rating))
+            conn.commit()
+            conn.close()
+            
+            flash(f'{title} added to watchlist!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash(f'Movie not found, Try again', 'error')
+    
+    return render_template('add_movie.html')
+
+@app.route('/del_movie/<int:movie_id>')
+@login_required
+def del_movie(movie_id):
+    conn = sqlite3.connect('movies.db')
+    c = conn.cursor()
+    c.execute('DELETE FROM movies WHERE id = ? AND user_id = ?', (movie_id, current_user.id))
+    conn.commit()
+    conn.close()
+    flash('Movie deleted', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/mark_watched/<int:movie_id>')
+@login_required
+def mark_watched(movie_id):
+    conn = sqlite3.connect('movies.db')
+    c = conn.cursor()
+    c.execute('UPDATE movies SET watched = 1 WHERE id = ? AND user_id = ?', (movie_id, current_user.id))
+    conn.commit()
+    conn.close()
+    flash('Marked as watched', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/random_pick')
+@login_required
+def random_pick():
+    conn = sqlite3.connect('movies.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM movies WHERE user_id = ? AND watched = 0', (current_user.id,))
+    movies = c.fetchall()
+    conn.close()
+    
+    if movies:
+        pick = random.choice(movies)
+        flash(f"Tonight's pick: {pick[2]} ({pick[3]})", 'success')  
+    else:
+        flash('No unwanted movies!', 'error')
+    
+    return redirect(url_for('dashboard'))
+    
+    
+    
+    
+    
+            
 if __name__== '__main__':
     init_db()
     app.run(debug=True)
