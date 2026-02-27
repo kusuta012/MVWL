@@ -5,7 +5,9 @@ This is a flask web application that helps you manage your movie watchlist and r
 # Tech Stack
 
 backend - Flask
+
 API - OMDB 
+
 frontend - just html css 
 
 # screenshots
