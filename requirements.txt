@@ -3,3 +3,4 @@ Flask-login
 Flask-limiter
 requests
 Werkzeug
+gunicorn
