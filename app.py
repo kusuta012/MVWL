@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request, flash, url_for
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user # type: ignore
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from werkzeug.security import generate_password_hash, check_password_hash, 
+from werkzeug.security import generate_password_hash, check_password_hash 
 import sqlite3
 import requests
 import random
